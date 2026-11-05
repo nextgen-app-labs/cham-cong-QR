@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Mate: Thu Chi & POS - Trợ lý tài chính & Vận hành thông minh</title>
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Money Mate: Thu Chi & POS - Quản lý tài chính & Vận hành">
+  <meta name="description" content="Ứng dụng quản lý thu chi, máy bán hàng POS, quản lý nhà trọ, khách sạn và chấm công QR toàn diện trên Android. Hoạt động offline, bảo mật.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0f1422',
+              card: '#181f33',
+              cardBorder: '#27324d',
+              accent: '#6366f1',
+              accentLight: '#818cf8',
+              income: '#10b981',
+              expense: '#ef4444',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Phone frame styling */
+    .phone-mockup {
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(99, 102, 241, 0.15);
+      border: 8px solid #232c45;
+      border-radius: 40px;
+      position: relative;
+    }
+    .phone-notch {
+      width: 120px;
+      height: 18px;
+      background-color: #232c45;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+    }
+    .glow-bg {
+      background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.18) 0%, rgba(15, 20, 34, 0) 70%);
+    }
+  </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#0b0f19]/80 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="#" class="flex items-center space-x-3 group">
+        <!-- [THAY LOGO CỦA BẠN TẠI ĐÂY] Kích thước khuyến nghị: 128x128 hoặc SVG -->
+        <img src="https://placehold.co/128x128/6366f1/ffffff?text=MM" 
+             alt="Money Mate Logo" 
+             class="w-10 h-10 rounded-xl shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+        <div>
+          <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">MoneyMate</span>
+          <p class="text-[11px] text-slate-400 font-medium leading-none mt-0.5">Thu Chi & POS</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <a href="#features" class="hover:text-white transition">Tính năng</a>
+        <a href="#solutions" class="hover:text-white transition">Đối tượng</a>
+        <a href="#privacy" class="hover:text-white transition">Bảo mật & Offline</a>
+        <a href="#preview" class="hover:text-white transition">Giao diện</a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center space-x-3">
+        <a href="https://play.google.com/store/apps/details?id=com.nymdev.moneymate" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5 active:translate-y-0">
+          <i class="fa-brands fa-google-play text-base text-yellow-300"></i>
+          <span>Tải trên CH Play</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden glow-bg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Text Content -->
+          <div class="lg:col-span-7 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/60 border border-indigo-700/40 text-indigo-300 text-xs font-semibold mb-6">
+              <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Ứng dụng quản lý tài chính & vận hành thông minh 2026
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+              Quản Lý Thu Chi, Bán Hàng & Nhà Trọ <span class="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Gọn Gàng Trên Một Ứng Dụng</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              Trợ lý tài chính và vận hành thông minh dành riêng cho chủ cửa hàng, chủ nhà trọ, khách sạn và người kinh doanh nhỏ. Hoạt động offline mượt mà, lưu trữ dữ liệu an toàn ngay trên điện thoại của bạn.
+            </p>
+
+            <!-- Download Badges / CTA -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+              <a href="https://play.google.com/store/apps/details?id=com.nymdev.moneymate" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-slate-900 border border-slate-700/80 hover:border-indigo-500/80 px-6 py-3.5 rounded-2xl shadow-xl transition-all duration-300 group hover:bg-slate-800">
+                <i class="fa-brands fa-google-play text-3xl text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                <div class="text-left">
+                  <span class="block text-[11px] uppercase tracking-wider text-slate-400 font-semibold leading-tight">Có sẵn trên</span>
+                  <span class="block text-base font-bold text-white leading-tight">Google Play</span>
+                </div>
+              </a>
+
+              <a href="#features" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800/80 hover:bg-slate-800 text-slate-200 px-6 py-3.5 rounded-2xl font-semibold text-sm border border-slate-700/60 transition">
+                <span>Khám phá tính năng</span>
+                <i class="fa-solid fa-arrow-down text-xs text-indigo-400"></i>
+              </a>
+            </div>
+
+            <!-- Bullet trust points -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto lg:mx-0 text-left">
+              <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-800/40 border border-slate-800">
+                <i class="fa-solid fa-wifi-slash text-indigo-400 text-sm"></i>
+                <span class="text-xs text-slate-300 font-medium">Chạy Offline</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-800/40 border border-slate-800">
+                <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
+                <span class="text-xs text-slate-300 font-medium">Lưu Cục Bộ</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-800/40 border border-slate-800">
+                <i class="fa-solid fa-qrcode text-violet-400 text-sm"></i>
+                <span class="text-xs text-slate-300 font-medium">POS & Chấm công</span>
+              </div>
+              <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-800/40 border border-slate-800">
+                <i class="fa-solid fa-bolt text-yellow-400 text-sm"></i>
+                <span class="text-xs text-slate-300 font-medium">Gọn nhẹ, mượt</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Phone Mockup Container (Hero 9:16) -->
+          <div class="lg:col-span-5 flex justify-center items-center">
+            <div class="relative w-full max-w-[290px] sm:max-w-[320px]">
+              
+              <!-- Subtle glow ring -->
+              <div class="absolute -inset-4 bg-gradient-to-tr from-indigo-600/30 to-violet-500/20 rounded-[50px] blur-xl opacity-75"></div>
+
+              <!-- Phone Box -->
+              <div class="phone-mockup bg-slate-950 overflow-hidden aspect-[9/16]">
+                <div class="phone-notch"></div>
+                
+                <!-- [THAY ẢNH 1: ẢNH CHỤP MÀN HÌNH CHÍNH TỔNG QUAN APP MONEYMATE TỈ LỆ 9:16] -->
+                <img src="https://placehold.co/400x711/141824/ffffff?text=Thay+Anh+Chup+Man+Hinh+9:16" 
+                     alt="Money Mate Màn hình chính" 
+                     class="w-full h-full object-cover">
+              </div>
+
+              <!-- Floating Micro-card 1: Thu Nhập -->
+              <div class="absolute -left-6 top-1/4 bg-slate-900/90 border border-slate-700/80 backdrop-blur-md px-3.5 py-2.5 rounded-2xl shadow-xl hidden sm:flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400">Thu nhập kinh doanh</p>
+                  <p class="text-xs font-bold text-emerald-400">+ Tiền phòng / POS</p>
+                </div>
+              </div>
+
+              <!-- Floating Micro-card 2: QR Chấm công -->
+              <div class="absolute -right-6 bottom-16 bg-slate-900/90 border border-slate-700/80 backdrop-blur-md px-3.5 py-2.5 rounded-2xl shadow-xl hidden sm:flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
+                  <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400">Chấm công không chạm</p>
+                  <p class="text-xs font-bold text-indigo-300">Quét mã QR tức thì</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS / HIGHLIGHT BAR ================= -->
+    <section class="border-y border-slate-800/80 bg-slate-900/40 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white">100%</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Bảo mật dữ liệu cục bộ</p>
+          </div>
+          <div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-indigo-400">Offline-First</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Dùng tốt khi mất mạng</p>
+          </div>
+          <div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white">5-in-1</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Tích hợp POS, Trọ, Chấm công</p>
+          </div>
+          <div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-emerald-400">0đ</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Dễ dàng cài đặt & làm quen</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ALL-IN-ONE FEATURES GRID ================= -->
+    <section id="features" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-indigo-400 text-xs sm:text-sm font-bold tracking-widest uppercase mb-3">Tính Năng Toàn Diện</h2>
+          <p class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Một ứng dụng thay thế sổ sách phức tạp</p>
+          <p class="text-slate-400 text-sm sm:text-base mt-4">Money Mate tích hợp đầy đủ công cụ cần thiết nhất cho mô hình bán lẻ, dịch vụ lưu trú và vận hành nhân sự nhỏ.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Card 1: Thu Chi -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Quản Lý Thu Chi & Dòng Tiền</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Ghi chép nhanh các khoản thu chi phát sinh mỗi ngày. Tách bạch doanh thu bán lẻ, tiền phòng và chi phí vận hành với báo cáo trực quan.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Theo dõi số dư thời gian thực</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Phân loại ngân sách thông minh</li>
+            </ul>
+          </div>
+
+          <!-- Card 2: Bán Hàng POS -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-cash-register"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Bán Hàng POS Nhanh Gọn</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Tạo đơn và tính tiền trong vài giây. Hỗ trợ quét mã vạch sản phẩm qua camera và tích hợp xuất mã QR thanh toán ngân hàng tiện lợi.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Quét mã vạch camera nhanh nhạy</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Thanh toán bằng mã QR chuyển khoản</li>
+            </ul>
+          </div>
+
+          <!-- Card 3: Nhà Trọ & Khách Sạn -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-hotel"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Nhà Trọ & Cơ Sở Lưu Trú</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Quản lý danh sách phòng trống, phòng đang thuê và thông tin khách lưu trú. Tự động tính tiền phòng, điện nước và lập phiếu thu tập trung.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-blue-400"></i> Tình trạng phòng trực quan</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-blue-400"></i> Quản lý tiền cọc và hạn hợp đồng</li>
+            </ul>
+          </div>
+
+          <!-- Card 4: Chấm Công QR Code -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Chấm Công Mã QR Không Chạm</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Nhân viên quét mã QR điểm danh vào ca và tan ca mà không cần máy vân tay đắt tiền. Tự động thống kê số ngày công và theo dõi đi muộn.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Quét mã check-in/check-out tức thì</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Xuất dữ liệu bảng công chi tiết</li>
+            </ul>
+          </div>
+
+          <!-- Card 5: Sổ Nợ Khách & Nhà Cung Cấp -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-book-bookmark"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Sổ Nợ Khoa Học & Rõ Ràng</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Ghi nhận các khoản phải thu từ khách và phải trả cho nhà cung cấp. Lưu trữ toàn bộ lịch sử thanh toán từng đợt, tránh thất thoát tiền bạc.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Ghi chú ngày hẹn thanh toán nợ</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Nhắc nhở số dư công nợ tồn đọng</li>
+            </ul>
+          </div>
+
+          <!-- Card 6: Quản Lý Xe & Tài Sản -->
+          <div class="bg-brand-card p-7 rounded-3xl border border-brand-cardBorder hover:border-indigo-500/50 transition duration-300 relative group">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Sổ Xe & Quản Lý Tài Sản</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              Theo dõi phương tiện xe cộ ra vào hoặc cho thuê. Quản lý danh mục tài sản, trang thiết bị cố định và theo dõi khấu hao phục vụ báo cáo.
+            </p>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> Quản lý biển số xe, thẻ gửi xe</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> Khấu hao tài sản trực quan</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APP PREVIEWS / SCREENSHOT SHOWCASE ================= -->
+    <section id="preview" class="py-20 bg-slate-900/30 border-y border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-indigo-400 text-xs sm:text-sm font-bold tracking-widest uppercase">Giao Diện Thực Tế</span>
+          <h2 class="text-3xl font-extrabold text-white mt-2">Trực quan - Tối ưu cho người Việt</h2>
+          <p class="text-slate-400 text-sm mt-3">Giao diện tối (Dark mode) sang trọng, các nút bấm to rõ, dễ sử dụng cho mọi lứa tuổi.</p>
+        </div>
+
+        <!-- 4 Mockups Showcase Grid (Tỉ lệ chuẩn 9:16) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Screen 1: Tổng quan tài chính -->
+          <div class="flex flex-col items-center">
+            <div class="phone-mockup w-full max-w-[260px] bg-slate-950 overflow-hidden aspect-[9/16] mb-4">
+              <div class="phone-notch"></div>
+              <!-- [THAY ẢNH 2: Màn hình Tổng quan / Trang chủ] -->
+              <img src="https://placehold.co/360x640/151a28/ffffff?text=1.+Tong+Quan+Thu+Chi" 
+                   alt="Giao diện tổng quan Money Mate" 
+                   class="w-full h-full object-cover">
+            </div>
+            <p class="font-bold text-white text-sm">Tổng quan & Dòng tiền</p>
+            <p class="text-slate-400 text-xs mt-1">Thẻ số dư, báo cáo thu - chi</p>
+          </div>
+
+          <!-- Screen 2: Máy POS & Bán hàng -->
+          <div class="flex flex-col items-center">
+            <div class="phone-mockup w-full max-w-[260px] bg-slate-950 overflow-hidden aspect-[9/16] mb-4">
+              <div class="phone-notch"></div>
+              <!-- [THAY ẢNH 3: Màn hình Bán hàng Máy POS] -->
+              <img src="https://placehold.co/360x640/151a28/ffffff?text=2.+May+POS+Ban+Hang" 
+                   alt="Giao diện máy POS bán hàng" 
+                   class="w-full h-full object-cover">
+            </div>
+            <p class="font-bold text-white text-sm">Máy POS Bán Hàng</p>
+            <p class="text-slate-400 text-xs mt-1">Tạo đơn & thanh toán QR</p>
+          </div>
+
+          <!-- Screen 3: Nhà trọ & Khách sạn -->
+          <div class="flex flex-col items-center">
+            <div class="phone-mockup w-full max-w-[260px] bg-slate-950 overflow-hidden aspect-[9/16] mb-4">
+              <div class="phone-notch"></div>
+              <!-- [THAY ẢNH 4: Màn hình Quản lý nhà trọ & khách sạn] -->
+              <img src="https://placehold.co/360x640/151a28/ffffff?text=3.+Quan+Ly+Nha+Tro" 
+                   alt="Giao diện quản lý phòng trọ" 
+                   class="w-full h-full object-cover">
+            </div>
+            <p class="font-bold text-white text-sm">Sơ Đồ Phòng Trọ</p>
+            <p class="text-slate-400 text-xs mt-1">Theo dõi khách & kỳ thanh toán</p>
+          </div>
+
+          <!-- Screen 4: Chấm công QR -->
+          <div class="flex flex-col items-center">
+            <div class="phone-mockup w-full max-w-[260px] bg-slate-950 overflow-hidden aspect-[9/16] mb-4">
+              <div class="phone-notch"></div>
+              <!-- [THAY ẢNH 5: Màn hình Chấm công nhân viên] -->
+              <img src="https://placehold.co/360x640/151a28/ffffff?text=4.+Cham+Cong+QR" 
+                   alt="Giao diện chấm công QR code" 
+                   class="w-full h-full object-cover">
+            </div>
+            <p class="font-bold text-white text-sm">Chấm Công Nhân Viên</p>
+            <p class="text-slate-400 text-xs mt-1">Quét mã vào/tan ca tức thì</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= OFFLINE-FIRST & PRIVACY ================= -->
+    <section id="privacy" class="py-20 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-brand-card to-[#1d253d] border border-brand-cardBorder rounded-3xl p-8 sm:p-14 relative overflow-hidden">
+          
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-4">
+              <i class="fa-solid fa-lock"></i>
+              Bảo mật dữ liệu chuẩn Data Safety Google Play
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-6">Ưu tiên lưu trữ cục bộ – Dữ liệu là của riêng bạn</h2>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
+              Money Mate được thiết kế với cơ chế ưu tiên lưu trữ cục bộ (Local Storage). Mọi thông tin đơn hàng, số dư thu chi, danh sách khách thuê trọ và nhân viên của bạn được lưu trực tiếp trên thiết bị Android của bạn. Bạn có thể mở app và thao tác bình thường ngay cả khi không có kết nối Internet.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex items-start gap-3">
+                <div class="text-indigo-400 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <h4 class="text-white font-semibold text-sm">Không lo mất mạng</h4>
+                  <p class="text-xs text-slate-400">Tạo đơn bán hàng POS và ghi chép chi tiêu mọi lúc mọi nơi.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="text-indigo-400 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <h4 class="text-white font-semibold text-sm">Mã hóa đường truyền an toàn</h4>
+                  <p class="text-xs text-slate-400">Các dữ liệu kỹ thuật và dịch vụ tích hợp luôn được mã hóa trong quá trình truyền tải.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <i class="fa-solid fa-shield-cat absolute -right-10 -bottom-10 text-[180px] text-white/5 pointer-events-none hidden lg:block"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TARGET AUDIENCE ================= -->
+    <section id="solutions" class="py-20 bg-slate-900/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl font-extrabold text-white">Ai Phù Hợp Với Money Mate?</h2>
+          <p class="text-slate-400 text-sm mt-3">Được tinh gọn để phục vụ những nhu cầu thực tế nhất của các mô hình kinh doanh vừa và nhỏ.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-indigo-400 text-2xl mb-3"><i class="fa-solid fa-store"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Chủ cửa hàng & Shop bán lẻ</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Cần máy tính tiền cầm tay, xuất hóa đơn QR, quét mã vạch và ghi chép doanh thu hằng ngày nhanh gọn.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-emerald-400 text-2xl mb-3"><i class="fa-solid fa-building-user"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Chủ dãy trọ, Nhà cho thuê</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Quản lý tình trạng phòng trống, thông tin khách thuê, số điện nước và hạn đóng tiền phòng mỗi tháng.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-blue-400 text-2xl mb-3"><i class="fa-solid fa-bed"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Khách sạn & Homestay</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Theo dõi lượt khách nhận phòng, trả phòng, tổng hợp tiền cọc và doanh thu lưu trú tập trung.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-purple-400 text-2xl mb-3"><i class="fa-solid fa-users"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Quản lý nhân viên & Ca làm</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Chấm công nhân viên không chạm bằng mã QR, theo dõi tình trạng đi muộn và tính tổng ngày công rõ ràng.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-amber-400 text-2xl mb-3"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Người theo dõi công nợ</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Không sợ sót sổ nợ khách mua chịu hoặc các khoản cần thanh toán cho nhà cung cấp hàng hóa.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card/70 border border-brand-cardBorder">
+            <div class="text-cyan-400 text-2xl mb-3"><i class="fa-solid fa-user-tie"></i></div>
+            <h3 class="text-base font-bold text-white mb-2">Người kinh doanh tự do</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Cần một công cụ theo dõi dòng tiền thu chi cá nhân và dự án tự do một cách bài bản, dễ dùng.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS / FEEDBACK ================= -->
+    <section class="py-20 border-t border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-3xl font-extrabold text-white">Được Người Kinh Doanh Tin Dùng</h2>
+          <p class="text-slate-400 text-sm mt-3">Lắng nghe chia sẻ từ những người dùng thực tế đang sử dụng Money Mate mỗi ngày.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div class="p-6 rounded-2xl bg-brand-card border border-brand-cardBorder">
+            <div class="flex text-amber-400 text-sm mb-3">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              "Mình quản lý dãy 15 phòng trọ, trước đây ghi sổ tay rất dễ nhầm lẫn tiền điện nước. Giờ dùng Money Mate chỉ cần mở điện thoại ra là biết phòng nào chưa đóng tiền, tiện vô cùng."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-indigo-600/30 text-indigo-300 font-bold flex items-center justify-center text-xs">AT</div>
+              <div>
+                <p class="text-xs font-bold text-white">Anh Tuấn</p>
+                <p class="text-[11px] text-slate-500">Chủ dãy trọ tại TP.HCM</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card border border-brand-cardBorder">
+            <div class="flex text-amber-400 text-sm mb-3">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              "Thích nhất là tính năng chấm công quét mã QR cho nhân viên quán cà phê của mình. Không cần đầu tư máy chấm công tốn kém, cuối tháng xuất ngày công cực nhanh."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-emerald-600/30 text-emerald-300 font-bold flex items-center justify-center text-xs">MH</div>
+              <div>
+                <p class="text-xs font-bold text-white">Chị Mai Hoa</p>
+                <p class="text-[11px] text-slate-500">Chủ tiệm Cafe & Đồ uống</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-brand-card border border-brand-cardBorder">
+            <div class="flex text-amber-400 text-sm mb-3">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              "App hoạt động offline tốt, ở cửa hàng mạng chập chờn vẫn tính tiền POS và quét mã thanh toán mượt mà. Dữ liệu lưu trong máy nên an tâm không sợ lộ thông tin khách."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-purple-600/30 text-purple-300 font-bold flex items-center justify-center text-xs">HD</div>
+              <div>
+                <p class="text-xs font-bold text-white">Hải Đăng</p>
+                <p class="text-[11px] text-slate-500">Cửa hàng phụ kiện điện thoại</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= FINAL CALL TO ACTION ================= -->
+    <section class="py-24 relative overflow-hidden">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        
+        <div class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-indigo-700/30 rounded-3xl p-10 sm:p-16 shadow-2xl relative">
+          
+          <div class="w-16 h-16 rounded-2xl bg-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-600/40">
+            <i class="fa-solid fa-coins text-2xl text-white"></i>
+          </div>
+
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+            Bắt đầu quản lý tài chính & vận hành thông minh ngay hôm nay
+          </h2>
+          
+          <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 font-normal">
+            Tải Money Mate trên Google Play hoàn toàn miễn phí và trải nghiệm bộ công cụ quản lý chuyên nghiệp trong lòng bàn tay.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="https://play.google.com/store/apps/details?id=com.nymdev.moneymate" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-8 py-4 rounded-2xl font-bold text-base shadow-xl shadow-indigo-600/40 transition transform hover:-translate-y-1">
+              <i class="fa-brands fa-google-play text-xl text-yellow-300"></i>
+              <span>Cài đặt ứng dụng trên Google Play</span>
+            </a>
+          </div>
+
+          <p class="text-[12px] text-slate-500 mt-5">Yêu cầu Android 8.1 trở lên • Dung lượng tối ưu • Lưu trữ an toàn</p>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-slate-800 bg-[#070a12] py-12 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <div class="flex items-center space-x-3">
+          <!-- Logo Footer -->
+          <img src="https://placehold.co/128x128/6366f1/ffffff?text=MM" 
+               alt="Money Mate Logo" 
+               class="w-7 h-7 rounded-lg">
+          <span class="text-white font-bold text-sm">Money Mate: Thu Chi & POS</span>
+        </div>
+
+        <div class="flex items-center space-x-6">
+          <a href="#features" class="hover:text-white transition">Tính năng</a>
+          <a href="#privacy" class="hover:text-white transition">Bảo mật & Dữ liệu</a>
+          <a href="https://play.google.com/store/apps/details?id=com.nymdev.moneymate" target="_blank" class="text-indigo-400 hover:underline">Google Play</a>
+        </div>
+
+        <p class="text-slate-500 text-center md:text-right">
+          &copy; 2026 nymdev. Mọi quyền được bảo lưu.
+        </p>
+
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>
